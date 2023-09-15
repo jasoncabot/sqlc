@@ -23,6 +23,7 @@ type opts struct {
 	EmitPointersForNullTypes    bool     `json:"emit_pointers_for_null_types"`
 	EmitEnumValidMethod         bool     `json:"emit_enum_valid_method,omitempty"`
 	EmitAllEnumValues           bool     `json:"emit_all_enum_values,omitempty"`
+	EmitSqlAsComment            bool     `json:"emit_sql_as_comment,omitempty"`
 	JsonTagsCaseStyle           string   `json:"json_tags_case_style,omitempty"`
 	Package                     string   `json:"package"`
 	Out                         string   `json:"out"`
