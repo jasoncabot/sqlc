@@ -66,12 +66,8 @@ func (q *Queries) {{.MethodName}}(ctx context.Context, {{ dbarg }} {{.Arg.Pair}}
 {{if eq .Cmd ":iter"}}
 {{range .Comments}}//{{.}}
 {{end -}}
-func (q *Queries) {{.MethodName}}(ctx context.Context, iter func({{.Ret.Name}} {{.Ret.Type}}) error, {{.Arg.Pair}}) error {
-  	{{- if $.EmitPreparedQueries}}
-	rows, err := q.query(ctx, q.{{.FieldName}}, {{.ConstantName}}, {{.Arg.Params}})
-  	{{- else}}
-	rows, err := q.db.QueryContext(ctx, {{.ConstantName}}, {{.Arg.Params}})
-  	{{- end}}
+func (q *Queries) {{.MethodName}}(ctx context.Context, {{ dbarg }} iter func({{.Ret.Name}} {{.Ret.Type}}) error, {{.Arg.Pair}}) error {
+    {{- template "queryCodeStdExec" . }}
 	if err != nil {
 		return err
 	}
@@ -81,7 +77,7 @@ func (q *Queries) {{.MethodName}}(ctx context.Context, iter func({{.Ret.Name}} {
 		if err := rows.Scan({{.Ret.Scan}}); err != nil {
 			return err
 		}
-		err = iter(i)
+		err = iter({{.Ret.Name}})
 		if err != nil {
 			return err
 		}
